@@ -6,17 +6,22 @@ import axios from 'axios';
 
 class Book extends Component {
   // TODO: Buat state modal dengan nilai default false dan selectedBook dengan default {}
-  state = {
-    //isi disini
+  state = { 
+    modal: false,
+    selectedBook:{}
   }
 
   toggle = (buku) => this.setState({ modal: !this.state.modal, selectedBook: buku });
 
   // TODO: Isi fungsi untuk memanggil method PUT untuk fitur merubah status peminjaman
   EditBook = buku => {
-    // isi disini
+    axios
+    .put("http://library2020-api-salmakh.herokuapp.com/library/" + buku._id, buku)
       .then(res => {
-        // ubah kembali state modal menjadi false
+        this.setState({modal:false})
+        window.alert("Berhasil");
+        console.log(res)
+      // ubah kembali state modal menjadi false
         // this.setState()
         
         // Tampilakan window alert yang memberitahu informasi bahwa perubahan berhasil
@@ -29,12 +34,14 @@ class Book extends Component {
   
   onSubmit = e => {
     e.preventDefault();
+    this.EditBook(this.state.selectedBook);
     // TODO: Panggil fungsi EditBook 
     // isi disini
 
   };
 
   render() {
+    const {judulBuku, pengarangBuku, genreBuku, isDipinjam} = this.props.book;
     // TODO: Buat variabel judulBuku, pengarangBuku, genreBuku, dan isDipinjam yang nilainya didapat dari props `book`
     // isi disini
 
@@ -44,7 +51,7 @@ class Book extends Component {
           <CardTitle>
             <label style={{ fontWeight: 'bold' }}>{judulBuku}</label>
             <Badge style={{ marginLeft: '5px', fontSize: '9px' }} color={isDipinjam ? "danger" : "success"}>
-              {/* TODO: Buat sebuah ternary. Jika isDipinjam true menampilkan kata "Lenyap,*/}
+              {isDipinjam ? "Lenyap" : "Tersedia" /* TODO: Buat sebuah ternary. Jika isDipinjam true menampilkan kata "Lenyap,*/}
               {/* Jika false menampilkan kata "Tersedia" */}
               {/* isi disini */}
             </Badge>
